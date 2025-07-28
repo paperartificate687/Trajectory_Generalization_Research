@@ -1,0 +1,6 @@
+PROBLEM_FILE = my_custom_tsp.tsp
+MOVE_TYPE = 5
+PATCHING_C = 3
+PATCHING_A = 2
+RUNS = 1
+TOUR_FILE = result_single_250.tsp

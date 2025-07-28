@@ -1,0 +1,54 @@
+graph TD
+    classDef prep fill:#e6f3ff,stroke:#333,stroke-width:2px;
+    classDef exec fill:#e6ffe6,stroke:#333,stroke-width:2px;
+    classDef plot fill:#fff5e6,stroke:#333,stroke-width:2px;
+
+    subgraph A_Graph ["实验数据准备 (Preparation)"]
+        direction TB
+        A1["1.定义实验场景<br>(e.g., Forest, Urban, Grid)"]
+        A2["2.为各场景生成<br>'sensor_locations_*.tsp' 文件"]
+        A3["3.使用不同算法<br>(ADAPT-GUAV, LKH, Greedy)<br/>处理位置文件"]
+        A4["4.生成对应的轨迹巡回文件<br/>'tour_*.tsp'"]
+        A5["准备好的<br/>实验输入数据"]
+        
+        A1 --> A2 --> A3 --> A4 --> A5
+    end
+
+    subgraph B_Graph ["实验执行流程 (Execution Flow)"]
+        direction TB
+        B1["开始单次实验运行"]
+        B2["1.配置 'simple_protocol.py'<br/>指定要测试的<br/>sensor 和 tour 文件"]
+        B3["2.运行 'main.py' 启动仿真"]
+        B4["3.仿真器执行:<br/>- UAV按轨迹飞行<br/>- GS记录延迟/吞吐量<br/>- 记录能耗和轨迹"]
+        B5["生成输出文件:<br/>.csv日志和控制台统计"]
+        B6["所有场景/算法<br/>是否已测试完毕?"]
+
+        B1 --> B2 --> B3 --> B4 --> B5 --> B6
+        B6 -- 否/No --> B1
+    end
+    
+    subgraph C_Graph ["数据分析与绘图 (Analysis & Plotting)"]
+        direction TB
+        C1["1.解析所有实验生成的<br/>CSV日志和控制台输出"]
+        C2["2.计算关键性能指标 (KPIs)<br/>- 数据完整性 (C)<br/>- 平均延迟 (L)<br/>- 能量效率 (E)"]
+        C3["3.选择绘图类型"]
+        C4["性能对比图 (柱状图)<br/>对比各算法在不同场景的KPIs"]
+        C5["动态适应性图 (折线图)<br/>展示动态事件中性能随时间变化"]
+        C6["飞行轨迹可视化 (3D路径图)<br/>使用 plot_trajectories.py"]
+        C7["最终分析报告"]
+
+        C1 --> C2 --> C3
+        C3 --> C4
+        C3 --> C5
+        C3 --> C6
+        C4 --> C7
+        C5 --> C7
+        C6 --> C7
+    end
+
+    A5 --> B_Graph
+    B6 -- 是/Yes --> C_Graph
+    
+    class A_Graph,A1,A2,A3,A4,A5 prep;
+    class B_Graph,B1,B2,B3,B4,B5,B6 exec;
+    class C_Graph,C1,C2,C3,C4,C5,C6,C7 plot;
